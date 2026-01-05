@@ -6,14 +6,18 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.mapapp",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "散歩のルートを記録するために位置情報を使用します。"
+      }
     },
     "android": {
       "adaptiveIcon": {

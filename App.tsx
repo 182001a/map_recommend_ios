@@ -5,11 +5,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import LoginScreen from "./src/screens/LoginScreen";
+import MapScreen from "./src/screens/MapScreen";
 
 // 画面一覧の型定義
 export type RootStackParamList = {
   Login: undefined;
-  Home: undefined; // ログイン後の仮画面
+  Map: undefined; // ログイン後の地図画面
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -38,11 +39,7 @@ function RootNavigator() {
         />
       ) : (
         // ログイン済み：メインの画面（ここでは一旦仮）を見せる
-        <Stack.Screen
-          name="Home"
-          component={() => <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><View /></View>}
-          options={{ title: "散歩アプリへようこそ！" }}
-        />
+        <Stack.Screen name="Map" component={MapScreen} options={{ title: "散歩マップ" }} />
       )}
     </Stack.Navigator>
   );
