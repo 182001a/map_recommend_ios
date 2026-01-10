@@ -53,7 +53,13 @@ export default function CourseDetailScreen({ route, navigation }: Props) {
       <View style={styles.buttonContainer}>
         <Button 
           title="このコースで散歩を開始する" 
-          onPress={() => navigation.navigate('Map')} 
+          onPress={() => navigation.navigate(
+            'Map',
+            {
+              courseCoordinates: course.coordinates,
+              courseTitle: course.title
+            }
+          )} 
         />
       </View>
     </View>

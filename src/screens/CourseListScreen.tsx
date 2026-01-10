@@ -3,7 +3,8 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 // Coordinate type definition for latitude and longitude
-type Coordinate = {
+
+export type Coordinate = {
   latitude: number;
   longitude: number;
 };

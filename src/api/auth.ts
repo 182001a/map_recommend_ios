@@ -38,3 +38,15 @@ export async function login(
         throw new Error(message);
     }
 }
+
+// ユーザー情報を取得するAPIの実装
+export async function getProfile(
+    token: string
+): Promise<User> {
+    const response = await axios.get(`${API_BASE_URL}/auth/me/`, {
+        headers: {
+            Authorization: `Token ${token}`,
+        },
+    });
+    return response.data;
+}

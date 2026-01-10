@@ -4,17 +4,20 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
+import { Coordinate } from "./src/screens/CourseListScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import MapScreen from "./src/screens/MapScreen";
 import CourseListScreen from "./src/screens/CourseListScreen";
 import CourseDetailScreen from "./src/screens/CourseDetailScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
 
 // 画面一覧の型定義
 export type RootStackParamList = {
   Login: undefined;
-  Map: undefined; // ログイン後の地図画面
+  Map: { courseCoordinates?: Coordinate[]; courseTitle: string }; // ログイン後の地図画面
   CourseList: undefined; // コース一覧画面
-  CourseDetail: { courseId: any }; // コース詳細画面
+  CourseDetail: { courseId: string }; // コース詳細画面
+  Profile: undefined; // プロフィール画面
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -49,6 +52,12 @@ function RootNavigator() {
             component={MapScreen} 
             options={({ navigation }) => ({ 
               title: "散歩マップ",
+              headerLeft: () => (
+                <Button
+                  onPress={() => navigation.navigate('Profile')}
+                  title="プロフィール"
+                />
+              ),
               headerRight: () => (
                 <Button
                   onPress={() => navigation.navigate('CourseList')}
@@ -59,6 +68,7 @@ function RootNavigator() {
           />
           <Stack.Screen name="CourseList" component={CourseListScreen} options={{ title: "コース一覧" }} />
           <Stack.Screen name="CourseDetail" component={CourseDetailScreen} options={{ title: "コース詳細" }} />
+          <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: "プロフィール" }} />
         </>
       )}
     </Stack.Navigator>
