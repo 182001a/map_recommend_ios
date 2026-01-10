@@ -2,6 +2,11 @@ import React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
+// Coordinate type definition for latitude and longitude
+type Coordinate = {
+  latitude: number;
+  longitude: number;
+};
 
 // サンプルデータの型定義
 export type Course = {
@@ -9,12 +14,27 @@ export type Course = {
   title: string;
   distance: string;
   description: string;
+  coordinates: Coordinate[];
 };
 
-const SAMPLE_COURSES: Course[] = [
-  { id: '1', title: '代々木公園のんびりコース', distance: '3.2km', description: '緑豊かな公園を一周する初心者向けコースです。' },
-  { id: '2', title: '渋谷〜原宿ぶらり散歩', distance: '2.5km', description: '都会の景色を楽しみながら歩くオシャレなコース。' },
-  { id: '3', title: '明治神宮パワースポット巡り', distance: '4.0km', description: '都会の喧騒を忘れてリフレッシュできる参道コース。' },
+export const SAMPLE_COURSES: Course[] = [
+{ 
+    id: '1', 
+    title: '都心縦断・山手線沿い散歩コース', 
+    distance: '8.5km', 
+    description: '品川から恵比寿を経て代々木公園へ向かう、都会の移り変わりを楽しむロングコースです。',
+    coordinates: [
+      { latitude: 35.6220, longitude: 139.7470 }, // 1: 出発点（現在地想定：天王洲付近）
+      { latitude: 35.6284, longitude: 139.7387 }, // 2: 品川駅
+      { latitude: 35.6335, longitude: 139.7330 }, // 高輪台付近（経由地）
+      { latitude: 35.6410, longitude: 139.7210 }, // 白金台付近（経由地）
+      { latitude: 35.6466, longitude: 139.7101 }, // 3: 恵比寿駅
+      { latitude: 35.6585, longitude: 139.7010 }, // 渋谷駅付近（経由地）
+      { latitude: 35.6716, longitude: 139.6966 }, // 4: 代々木公園（目的地）
+    ]
+  },
+  { id: '2', title: '渋谷〜原宿ぶらり散歩', distance: '2.5km', description: '都会の景色を楽しみながら歩くオシャレなコース。', coordinates: [] },
+  { id: '3', title: '明治神宮パワースポット巡り', distance: '4.0km', description: '都会の喧騒を忘れてリフレッシュできる参道コース。', coordinates: [] },
 ];
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CourseList'>;
