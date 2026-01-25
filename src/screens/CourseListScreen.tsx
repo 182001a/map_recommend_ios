@@ -19,19 +19,43 @@ export type Course = {
 };
 
 export const SAMPLE_COURSES: Course[] = [
-{ 
-    id: '1', 
-    title: '都心縦断・山手線沿い散歩コース', 
-    distance: '8.5km', 
-    description: '品川から恵比寿を経て代々木公園へ向かう、都会の移り変わりを楽しむロングコースです。',
+  { 
+    id: 'yamanote-outer', 
+    title: '山手線一周・外回り（時計回り）', 
+    distance: '約34.5km', 
+    description: '東京駅から時計回りに全30駅を巡る、山手線完全制覇散歩コースです。',
     coordinates: [
-      { latitude: 35.6220, longitude: 139.7470 }, // 1: 出発点（現在地想定：天王洲付近）
-      { latitude: 35.6284, longitude: 139.7387 }, // 2: 品川駅
-      { latitude: 35.6335, longitude: 139.7330 }, // 高輪台付近（経由地）
-      { latitude: 35.6410, longitude: 139.7210 }, // 白金台付近（経由地）
-      { latitude: 35.6466, longitude: 139.7101 }, // 3: 恵比寿駅
-      { latitude: 35.6585, longitude: 139.7010 }, // 渋谷駅付近（経由地）
-      { latitude: 35.6716, longitude: 139.6966 }, // 4: 代々木公園（目的地）
+      { latitude: 35.6813, longitude: 139.7661 }, // 東京 (JY01)
+      { latitude: 35.6751, longitude: 139.7633 }, // 有楽町 (JY30)
+      { latitude: 35.6655, longitude: 139.7596 }, // 新橋 (JY29)
+      { latitude: 35.6556, longitude: 139.7567 }, // 浜松町 (JY28)
+      { latitude: 35.6457, longitude: 139.7476 }, // 田町 (JY27)
+      { latitude: 35.6355, longitude: 139.7407 }, // 高輪ゲートウェイ (JY26)
+      { latitude: 35.6302, longitude: 139.7404 }, // 品川 (JY25)
+      { latitude: 35.6197, longitude: 139.7286 }, // 大崎 (JY24)
+      { latitude: 35.6264, longitude: 139.7234 }, // 五反田 (JY23)
+      { latitude: 35.6340, longitude: 139.7158 }, // 目黒 (JY22)
+      { latitude: 35.6467, longitude: 139.7101 }, // 恵比寿 (JY21)
+      { latitude: 35.6585, longitude: 139.7013 }, // 渋谷 (JY20)
+      { latitude: 35.6702, longitude: 139.7027 }, // 原宿 (JY19)
+      { latitude: 35.6831, longitude: 139.7020 }, // 代々木 (JY18)
+      { latitude: 35.6909, longitude: 139.7003 }, // 新宿 (JY17)
+      { latitude: 35.7013, longitude: 139.7000 }, // 新大久保 (JY16)
+      { latitude: 35.7123, longitude: 139.7038 }, // 高田馬場 (JY15)
+      { latitude: 35.7212, longitude: 139.7066 }, // 目白 (JY14)
+      { latitude: 35.7289, longitude: 139.7104 }, // 池袋 (JY13)
+      { latitude: 35.7314, longitude: 139.7287 }, // 大塚 (JY12)
+      { latitude: 35.7335, longitude: 139.7393 }, // 巣鴨 (JY11)
+      { latitude: 35.7365, longitude: 139.7469 }, // 駒込 (JY10)
+      { latitude: 35.7381, longitude: 139.7609 }, // 田端 (JY09)
+      { latitude: 35.7321, longitude: 139.7668 }, // 西日暮里 (JY08)
+      { latitude: 35.7278, longitude: 139.7710 }, // 日暮里 (JY07)
+      { latitude: 35.7205, longitude: 139.7788 }, // 鶯谷 (JY06)
+      { latitude: 35.7138, longitude: 139.7773 }, // 上野 (JY05)
+      { latitude: 35.7074, longitude: 139.7746 }, // 御徒町 (JY04)
+      { latitude: 35.6987, longitude: 139.7742 }, // 秋葉原 (JY03)
+      { latitude: 35.6917, longitude: 139.7709 }, // 神田 (JY02)
+      { latitude: 35.6813, longitude: 139.7661 }, // 東京 (JY01) ※ゴール
     ]
   },
   { id: '2', title: '渋谷〜原宿ぶらり散歩', distance: '2.5km', description: '都会の景色を楽しみながら歩くオシャレなコース。', coordinates: [] },
