@@ -1,2 +1,2 @@
-// 任意設定
-export const API_BASE_URL = 'http://192.168.10.105:8000/api';
+const localIp = process.env.EXPO_PUBLIC_LOCAL_IP || 'localhost';
+export const API_BASE_URL = `http://${localIp}:8000/api`;
