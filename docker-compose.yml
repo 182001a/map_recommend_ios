@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "8081:8081"
+    volumes:
+      - .:/app
+      - /app/node_modules # ホストのnode_modulesで上書きされないようにする
+    environment:
+      # 重要：iPhoneから接続するためにPCのIPアドレスを指定
+      - EXPO_PACKAGER_PROXY_URL=http://<あなたのPCのIPアドレス>:8081
+      - REACT_NATIVE_PACKAGER_HOSTNAME=<あなたのPCのIPアドレス>
+    stdin_open: true
+    tty: true
