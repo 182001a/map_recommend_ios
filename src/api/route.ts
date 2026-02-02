@@ -34,3 +34,33 @@ export const fetchWalkingRoute = async (waypoints: Coordinate[]): Promise<Coordi
     return waypoints; // 失敗時は元の直線データを返す（フォールバック）
   }
 };
+
+/**
+ * OSRM APIを使用して、2点間の歩行距離(km)を取得する
+ */
+export const fetchWalkingDistance = async (
+  from: Coordinate,
+  to: Coordinate
+): Promise<number | null> => {
+  const coordsString = `${from.longitude},${from.latitude};${to.longitude},${to.latitude}`;
+  const url = `http://router.project-osrm.org/route/v1/walking/${coordsString}?overview=false`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.code !== 'Ok') {
+      throw new Error('距離の取得に失敗しました');
+    }
+
+    const meters = data.routes[0]?.distance;
+    if (typeof meters !== 'number') {
+      throw new Error('距離データが見つかりません');
+    }
+
+    return meters / 1000;
+  } catch (error) {
+    console.error("OSRM Error:", error);
+    return null;
+  }
+};
