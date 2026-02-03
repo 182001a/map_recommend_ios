@@ -2,6 +2,21 @@
 
 import { Coordinate } from "../screens/CourseListScreen";
 
+const haversineDistanceKm = (from: Coordinate, to: Coordinate): number => {
+  const toRad = (value: number) => (value * Math.PI) / 180;
+  const earthRadiusKm = 6371;
+  const dLat = toRad(to.latitude - from.latitude);
+  const dLon = toRad(to.longitude - from.longitude);
+  const lat1 = toRad(from.latitude);
+  const lat2 = toRad(to.latitude);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return earthRadiusKm * c;
+};
+
 /**
  * OSRM APIを使用して、複数の地点を結ぶ歩行ルートを取得する
  */
@@ -36,12 +51,9 @@ export const fetchWalkingRoute = async (waypoints: Coordinate[]): Promise<Coordi
 };
 
 /**
- * OSRM APIを使用して、2点間の歩行距離(km)を取得する
+ * OSRM APIを使用して、2地点間の歩行距離(km)を取得する
  */
-export const fetchWalkingDistance = async (
-  from: Coordinate,
-  to: Coordinate
-): Promise<number | null> => {
+export const fetchWalkingDistance = async (from: Coordinate, to: Coordinate): Promise<number> => {
   const coordsString = `${from.longitude},${from.latitude};${to.longitude},${to.latitude}`;
   const url = `http://router.project-osrm.org/route/v1/walking/${coordsString}?overview=false`;
 
@@ -49,18 +61,14 @@ export const fetchWalkingDistance = async (
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.code !== 'Ok') {
+    if (data.code !== 'Ok' || !data.routes?.length) {
       throw new Error('距離の取得に失敗しました');
     }
 
-    const meters = data.routes[0]?.distance;
-    if (typeof meters !== 'number') {
-      throw new Error('距離データが見つかりません');
-    }
-
+    const meters = data.routes[0].distance as number;
     return meters / 1000;
   } catch (error) {
-    console.error("OSRM Error:", error);
-    return null;
+    console.error("OSRM Distance Error:", error);
+    return haversineDistanceKm(from, to);
   }
 };
