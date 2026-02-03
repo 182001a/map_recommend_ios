@@ -20,6 +20,8 @@ export default function MapScreen({ route }: Props) {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [distanceKm, setDistanceKm] = useState<number | null>(null);
   const [distanceLoading, setDistanceLoading] = useState(false);
+  const [placeNames, setPlaceNames] = useState<Record<number, string>>({});
+  const [placeLoading, setPlaceLoading] = useState(false);
 
   const courseCoordinates = route.params?.courseCoordinates;
 
@@ -71,6 +73,61 @@ export default function MapScreen({ route }: Props) {
     };
 
     loadDistance();
+
+    return () => {
+      isActive = false;
+    };
+  }, [courseCoordinates, selectedIndices]);
+
+  useEffect(() => {
+    if (!courseCoordinates || selectedIndices.length === 0) {
+      setPlaceNames({});
+      setPlaceLoading(false);
+      return;
+    }
+
+    let isActive = true;
+    const loadPlaceNames = async () => {
+      setPlaceLoading(true);
+      try {
+        const results = await Promise.all(
+          selectedIndices.map(async (index) => {
+            const coordinate = courseCoordinates[index];
+            const response = await Location.reverseGeocodeAsync({
+              latitude: coordinate.latitude,
+              longitude: coordinate.longitude,
+            });
+            const place = response[0];
+            const formatted = place
+              ? [
+                  place.name,
+                  place.street,
+                  place.city,
+                  place.region,
+                ]
+                  .filter(Boolean)
+                  .join(' ')
+              : '不明な地点';
+            return [index, formatted] as const;
+          })
+        );
+
+        if (isActive) {
+          setPlaceNames(Object.fromEntries(results));
+        }
+      } catch (error) {
+        console.error("Reverse geocode error:", error);
+        if (isActive) {
+          setPlaceNames({});
+        }
+      } finally {
+        if (isActive) {
+          setPlaceLoading(false);
+        }
+      }
+    };
+
+    loadPlaceNames();
 
     return () => {
       isActive = false;
@@ -147,6 +204,21 @@ export default function MapScreen({ route }: Props) {
           ) : (
             <Text style={styles.distanceValue}>-</Text>
           )}
+
+          <View style={styles.placeContainer}>
+            <Text style={styles.placeLabel}>選択地点</Text>
+            {placeLoading ? (
+              <Text style={styles.placeValue}>地名を取得中...</Text>
+            ) : selectedIndices.length === 0 ? (
+              <Text style={styles.placeValue}>-</Text>
+            ) : (
+              selectedIndices.map((index) => (
+                <Text key={index} style={styles.placeValue}>
+                  {placeNames[index] ?? '不明な地点'}
+                </Text>
+              ))
+            )}
+          </View>
         </View>
       )}
 
@@ -210,5 +282,19 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#111',
     marginTop: 4,
+  },
+  placeContainer: {
+    marginTop: 8,
+    alignItems: 'center',
+  },
+  placeLabel: {
+    fontSize: 12,
+    color: '#666',
+  },
+  placeValue: {
+    fontSize: 13,
+    color: '#111',
+    marginTop: 4,
+    textAlign: 'center',
   },
 });
